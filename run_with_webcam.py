@@ -112,7 +112,8 @@ def detect_landmarks(face, frame, scale_x=0, scale_y=0):
 
 def draw_cascade_face(face, frame):
     (x, y, w, h) = (int(e) for e in face)
-    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    cv2.ellipse(frame, (x,y), (w,h), 0, 0, 360, (	100, 149, 237), 3) 
+    #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
 
 def draw_landmarks(landmarks, frame):
@@ -162,11 +163,11 @@ def segment_eyes(frame, landmarks, ow=160, oh=96):
         eye_image = cv2.warpAffine(frame, transform_mat[:2, :], (ow, oh))
         eye_image = cv2.equalizeHist(eye_image)
 
-        if is_left:
-            eye_image = np.fliplr(eye_image)
-            cv2.imshow('left eye image', eye_image)
-        else:
-            cv2.imshow('right eye image', eye_image)
+#         if is_left:
+#             eye_image = np.fliplr(eye_image)
+#             cv2.imshow('left eye image', eye_image)
+#         else:
+#             cv2.imshow('right eye image', eye_image)
         eyes.append(EyeSample(orig_img=frame.copy(),
                               img=eye_image,
                               transform_inv=inv_transform_mat,
