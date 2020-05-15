@@ -22,7 +22,7 @@ from util.eye_sample import EyeSample
 torch.backends.cudnn.enabled = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-print(device)
+# print(device)
 
 webcam = cv2.VideoCapture('http://192.168.1.80:4747/video')
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 960)
