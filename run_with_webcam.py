@@ -112,8 +112,8 @@ def detect_landmarks(face, frame, scale_x=0, scale_y=0):
 
 def draw_cascade_face(face, frame):
     (x, y, w, h) = (int(e) for e in face)
-    cv2.ellipse(frame, (x,y), (w,h), 0, 0, 360, (	100, 149, 237), 3) 
-    #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+#     cv2.ellipse(frame, (int(x+w/2),int(y+h/2)), (int(w/2*1.1),int(h/2*1.3)), 0, 0, 360, (237, 149, 100), 3)
+    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
 
 def draw_landmarks(landmarks, frame):
