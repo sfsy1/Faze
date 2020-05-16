@@ -112,13 +112,13 @@ def detect_landmarks(face, frame, scale_x=0, scale_y=0):
 
 def draw_cascade_face(face, frame):
     (x, y, w, h) = (int(e) for e in face)
-#     cv2.ellipse(frame, (int(x+w/2),int(y+h/2)), (int(w/2*1.1),int(h/2*1.3)), 0, 0, 360, (237, 149, 100), 3)
-    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    cv2.ellipse(frame, (int(x+w/2),int(y+h/2)), (int(h/4+w/4*1.2),int(h/2*1.2)), 0, 0, 360, (237, 149, 100), 3)
+#     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
 
 def draw_landmarks(landmarks, frame):
     for (x, y) in landmarks:
-        cv2.circle(frame, (int(x), int(y)), 2, (0, 255, 0), -1, lineType=cv2.LINE_AA)
+        cv2.circle(frame, (int(x), int(y)), 2, (160, 230, 160), -1, lineType=cv2.LINE_AA)
 
 
 def segment_eyes(frame, landmarks, ow=160, oh=96):

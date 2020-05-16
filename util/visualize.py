@@ -58,7 +58,6 @@ def plot_all(head, gazes):
             look = 1
         
         ax.plot([g[0],head[0]], [0,head[2]], [g[1],head[1]],'o--', c=gaze_color[look], alpha=0.4, linewidth=6, markersize=16)
-        print(head,scale,g)
         
     
     # camera (origin)
