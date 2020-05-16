@@ -1,10 +1,91 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.patches import Circle, PathPatch, Rectangle
+from matplotlib.text import TextPath
+from matplotlib.transforms import Affine2D
+import mpl_toolkits.mplot3d.art3d as art3d
 
-"""plots head in 3D"""
+def text3d(ax, xyz, s, zdir="z", size=None, angle=0, usetex=False, **kwargs):
+    '''
+    Plots the string 's' on the axes 'ax', with position 'xyz', size 'size',
+    and rotation angle 'angle'.  'zdir' gives the axis which is to be treated
+    as the third dimension.  usetex is a boolean indicating whether the string
+    should be interpreted as latex or not.  Any additional keyword arguments
+    are passed on to transform_path.
 
+    Note: zdir affects the interpretation of xyz.
+    '''
+    x, y, z = xyz
+    if zdir == "y":
+        xy1, z1 = (x, z), y
+    elif zdir == "x":
+        xy1, z1 = (y, z), x
+    else:
+        xy1, z1 = (x, y), z
+
+    text_path = TextPath((0, 0), s, size=size, usetex=usetex)
+    trans = Affine2D().rotate(angle).translate(xy1[0], xy1[1])
+
+    p1 = PathPatch(trans.transform_path(text_path), **kwargs)
+    ax.add_patch(p1)
+    art3d.pathpatch_2d_to_3d(p1, z=z1, zdir=zdir)
+
+
+"""plots head,gaze,screen,camera in 3D"""
+def plot_all(head, gazes):
+    """
+    input: [x, y, z] of head
+    output: np.array image of 3D plot of everything 
+    """        
+    # flip axes. actual axis order: x, z, y
+    head[0], head[1] = -head[0], -head[1]
+    fig = plt.figure(figsize=(12,9))
+    fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+    ax = Axes3D(fig)#fig.gca(projection='3d')
+    ax.view_init(elev=20, azim=-60)
+    ax.set_xlim3d(-60,60); ax.set_ylim3d(120,0); ax.set_zlim3d(-80,40)
+#     ax.set_xticks([]); ax.set_yticks([]); ax.set_zticks([])
+    
+    # check gaze & plot gaze, projected onto z = 0 frame (i.e. the screen)
+    gaze_color = ['orange','green']
+    
+    for i in range(2):
+        look = 0
+        scale = abs(head[2].copy()/gazes[i,2])
+        g = gazes[i,:].copy()*scale + head
+        if abs(g[0]) <= 30 and g[1] <= 0 and g[1] >= -40:
+            look = 1
+        
+        ax.plot([g[0],head[0]], [0,head[2]], [g[1],head[1]],'o--', c=gaze_color[look], alpha=0.4, linewidth=6, markersize=16)
+        print(head,scale,g)
+        
+    
+    # camera (origin)
+    ax.scatter([0],[0],[0], marker='x', s=128, c='k')
+    ax.text(0, 0, 5, "Camera",color='k',fontsize=16)
+    
+    # screen
+    p = Rectangle((-30, -40), 60,40, color='gray',alpha=0.3)
+    ax.add_patch(p)
+    art3d.pathpatch_2d_to_3d(p, z=0, zdir="y")
+    text3d(ax, (-25, 0, -20), "Screen", zdir="y", size=15, ec="none", fc="k", alpha=0.1)
+    
+    # plot head
+    ax.scatter([head[0]],[head[2]],[head[1]], c='cornflowerblue', s=1200)
+    ax.plot([head[0],-60],[head[2],head[2]],[head[1],head[1]], '+--', c='cornflowerblue', alpha=0.3, linewidth=2, markersize=12)
+    ax.plot([head[0],head[0]],[head[2],0],[head[1],head[1]], '+--',c='cornflowerblue', alpha=0.3, linewidth=2, markersize=12)
+    ax.plot([head[0],head[0]],[head[2],head[2]],[head[1],-80],'+--', c='cornflowerblue', alpha=0.3, linewidth=2, markersize=12)
+    
+    plt.close(fig)  
+    b, (w,h) = fig.canvas.print_to_buffer()
+    img_plot = np.frombuffer(b, dtype=np.uint8)
+    img_plot = np.resize(img_plot, (h,w,4))[:,:,(2,1,0)] #bgr to rgb
+    return img_plot
+
+
+
+"""plots head,screen,camera in 3D"""
 def plot_head(head):
     """
     input: [x, y, z] of head
