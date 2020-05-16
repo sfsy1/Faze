@@ -1,4 +1,5 @@
-#  **Faze** - face & gaze detection for attention prediction
+#  **Faze**
+###  Face & Gaze Detection for Attention Prediction
 Shifeng, May 2020
 
 ## Requirements
