@@ -63,7 +63,7 @@ def mean_angular_error(a, b):
     return np.mean(angular_error(a, b))
 
 
-def draw_gaze(image_in, eye_pos, pitchyaw, length=40.0, thickness=2, color=(0, 0, 255)):
+def draw_gaze(image_in, eye_pos, pitchyaw, length=40.0, thickness=2, color=(160, 160, 230)):
     """Draw gaze angle on given image with a given eye positions."""
     image_out = image_in
     if len(image_out.shape) == 2 or image_out.shape[2] == 1:
