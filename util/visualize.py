@@ -81,6 +81,27 @@ def plot_all(head, gazes):
     img_plot = np.resize(img_plot, (h,w,4))[:,:,(2,1,0)] #bgr to rgb
     return img_plot
 
+def plot_emotions(emotion_history):
+    emo = np.array(emotion_history)+1
+
+    fig = plt.figure(figsize=(12,4))
+    plt.stackplot(np.arange(len(emo)), [emo,2-emo], colors=['mediumturquoise','lightcoral'], alpha=0.6)
+    plt.plot(emo, c='#555555')
+    plt.text(0,2.03,'sad',fontsize=12)
+    plt.text(0,-0.13,'happy',fontsize=12)
+
+    # size = ((np.arange(len(emo))**2)*64/len(emo)**2)[-20:]
+    # plt.scatter(np.arange(len(emo))[-20:], emo[-20:],s=size, c='#444444')
+    plt.xlim(0,60)
+    plt.ylim(0,2)
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.close(fig)  
+    b, (w,h) = fig.canvas.print_to_buffer()
+    img_plot = np.frombuffer(b, dtype=np.uint8)
+    img_plot = np.resize(img_plot, (h,w,4))[:,:,(2,1,0)] #rgb to bgr
+    return img_plot
 
 
 # """plots head,screen,camera in 3D"""

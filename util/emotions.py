@@ -16,6 +16,14 @@ def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
     
 def get_emotion(current_face, gray):
+    """
+    inputs:
+    current_face: (xmin, ymin, w, h)
+    gray: grayscale frame
+    
+    outputs:
+    emotion: from -1 to 1, 1 being most positive, -1 being most negative
+    """
     cut_size = 44
     transform_test = transforms.Compose([
         transforms.TenCrop(cut_size),
@@ -28,11 +36,10 @@ def get_emotion(current_face, gray):
     ymin = current_face[1]
     ymax = current_face[1] + current_face[3]
     face = gray[ymin:ymax,xmin:xmax]
-#     plt.imshow(face)
     
     # resize and transform
-    gray = resize(gray, (48,48), mode='symmetric').astype(np.uint8)
-    img = gray[:, :, np.newaxis]
+    face = (resize(face, (48,48), mode='symmetric')*255).astype('uint8')
+    img = face[:, :, np.newaxis]
     img = np.concatenate((img, img, img), axis=2)
     img = Image.fromarray(img)
     inputs = transform_test(img)
@@ -54,10 +61,10 @@ def get_emotion(current_face, gray):
     with torch.no_grad():
         inputs = Variable(inputs)
     outputs = net(inputs)
-    
     outputs_avg = outputs.view(ncrops, -1).mean(0)  # avg over crops
     weights = np.array([-0.4,-0.1,-0.1,0.8,-0.4,0.2])
     score = F.softmax(outputs_avg, dim=0)
     emotion_score = np.sum(score.cpu().detach().numpy()[:6]**0.5*weights)
+    
 
     return emotion_score
