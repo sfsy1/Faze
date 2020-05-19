@@ -1,7 +1,7 @@
 #  **Faze**
 ###  Face & Gaze Detection for Attention Prediction
 Shifeng, May 2020
-![screenshot](https://raw.githubusercontent.com/sfsy1/Faze/master/pics/overview.jpg)
+![screenshot](https://raw.githubusercontent.com/sfsy1/Faze/master/images/overview.jpg)
 
 
 ## Requirements
