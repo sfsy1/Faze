@@ -1,7 +1,7 @@
 #  **Faze**
 ###  Face & Gaze Detection for Attention Prediction
 Shifeng, May 2020
-![screenshot](https://raw.githubusercontent.com/sfsy1/Faze/master/pics/overview.jpg)
+![screenshot](https://raw.githubusercontent.com/sfsy1/Faze/master/images/overview.jpg)
 
 
 ## Requirements
@@ -38,15 +38,17 @@ Shifeng, May 2020
 
 ## Possible Applications & Add-Ons
 * **Applications**
-    * Productivity tracking
-	* break reminders if your emotions are negative while staring at the screen.
-	* general productivity measure
-    * Content control, triggered by sudden offset of fear/disgust
-    * Accessiblity features
-	* auto-zoom into regions of gaze, if squinting is detected
-	* eye cursor controls
-    * Security
-	* check for gazes in the background
+  * Productivity tracking
+    * break reminders if your emotions are negative while staring at the screen.
+    * general productivity measure
+  * Content control
+    * block adult content if a child is looking at the screen
+    * monitor content of screen if sudden onset of emotions?
+  * Accessiblity features
+    * auto-zoom into regions of gaze, if squinting is detected
+    * eye cursor controls
+  * Security
+    * check for gazes in the background
 * **Improvements**
     * Model compression, optmization and training on more diverse datasets
     * Combine all 3 tasks into a single CNN?
